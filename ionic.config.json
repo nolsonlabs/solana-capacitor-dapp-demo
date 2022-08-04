@@ -1,0 +1,7 @@
+{
+  "name": "custom-cap-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
