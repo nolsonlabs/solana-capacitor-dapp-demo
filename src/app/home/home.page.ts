@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { WalletPickerComponent } from '../components/wallet-picker/wallet-picker.component';
 
-import { SolanaWalletAdaptor } from '@nolson/solana-wallet-adaptor-capacitor';
+import { SolanaWalletAdaptor } from 'solana-wallet-adaptor-capacitor';
 
 import { DOCUMENT } from '@angular/common';
 
