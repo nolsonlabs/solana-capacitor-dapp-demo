@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
-  appName: 'custom-cap-app',
+  appName: 'Solana Capacitor',
   webDir: 'www',
   bundledWebRuntime: false
 };
