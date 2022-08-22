@@ -19,7 +19,7 @@
         </ion-row>
       </ion-grid>
     </div>
-  <div *ngIf="appstate.selectedWallet$.value === 'FakeWallet'">
+  <div *ngIf="appstate.selectedWallet$.value?.walletName === 'FakeWallet'">
     <ion-row>
       <ion-col>
       <h3>FakeWallet</h3>
@@ -42,7 +42,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-button (click)="deauthorize()" [disabled]="!appstate.authToken$.value" expand="block">De-authorize</ion-button>
+        <ion-button (click)="deauthorize()" [disabled]="!appstate.authToken$.value" expand="block">Deauthorize</ion-button>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -98,7 +98,7 @@
       </ion-col>
     </ion-row>
   </div>
-  <div *ngIf="appstate.selectedWallet$.value === 'Phantom'">
+  <div *ngIf="appstate.selectedWallet$.value?.walletName === 'Phantom'">
     <ion-grid>
     <ion-row>
       <ion-col>
@@ -109,22 +109,24 @@
       <ion-col>
         <ion-text color="medium">
         <ion-grid class="ion-no-padding">
-          <ion-row>
+          <ion-row *ngIf="appstate.selectedWallet$.value?.walletInstalled && appstate.selectedWallet$.value?.walletHasDeepLinkCapability && appstate.selectedWallet$.value?.dAppPlatform === 'android'">
             <ion-col>
               <h4>Deeplink wallet functionality to be added here</h4>
             </ion-col>
           </ion-row>
-          <ion-row>
+          <ion-row *ngIf="(appstate.selectedWallet$.value?.walletInstalled && appstate.selectedWallet$.value?.dAppPlatform === 'web')">
             <ion-col>
               <ion-button 
-              (click)="authorize(appstate.selectedWallet$.value)"
-              [disabled]="appstate.authorizationObject$.value"
-              >Authorize</ion-button>
+              (click)="authorize(appstate.selectedWallet$.value?.walletName)"
+              [disabled]="appstate.authorizationObject$.value.authorized"
+              >Connect</ion-button>
             </ion-col>
           </ion-row>
-          <ion-row>
+          <ion-row *ngIf="appstate.selectedWallet$.value?.walletInstalled && appstate.selectedWallet$.value?.dAppPlatform === 'web'">
             <ion-col>
-              <ion-button (click)="deauthorize(appstate.selectedWallet$.value)">Deauthorize</ion-button>
+              <ion-button (click)="deauthorize(appstate.selectedWallet$.value)"
+                          [disabled]="!appstate.authorizationObject$.value.authorized"
+              >Disconnect</ion-button>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -133,7 +135,7 @@
     </ion-row>
   </ion-grid>
   </div>
-  <div *ngIf="appstate.selectedWallet$.value === 'Solflare'">
+  <div *ngIf="appstate.selectedWallet$.value?.walletName === 'Solflare'">
     <ion-grid>
       <ion-row>
         <ion-col>
@@ -142,14 +144,20 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-text color="medium">
-          <h4>Deeplink wallet functionality to be added here</h4>
-        </ion-text>
+          <ion-button 
+          (click)="authorize(appstate.selectedWallet$.value?.walletName)"
+          [disabled]="appstate.authorizationObject$.value.authorized"
+          >Connect</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-button (click)="deauthorize(appstate.selectedWallet$.value)" [disabled]="!appstate.authorizationObject$.value.authorized">Disconnect</ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
-  <div *ngIf="appstate.selectedWallet$.value === 'Slope'">
+  <div *ngIf="appstate.selectedWallet$.value?.walletName === 'Slope'">
     <ion-grid>
       <ion-row>
         <ion-col>

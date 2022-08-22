@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ModalController } from '@ionic/angular';
 
 import { AppstateService } from '../../services/appstate.service';
@@ -8,44 +9,25 @@ import { AppstateService } from '../../services/appstate.service';
   templateUrl: './wallet-picker.component.html',
   styleUrls: ['./wallet-picker.component.scss'],
 })
-export class WalletPickerComponent implements OnInit {
+export class WalletPickerComponent {
 
-  @Input() data: string[];
-
-  public installed = [];
-  public notFound = [];
-
-  public walletData = [
-    { id: 'app.phantom',
-      name: 'Phantom'
-     },
-     {
-       id: 'com.solflare.mobile',
-       name: 'Solflare'
-     },
-     {
-       id: 'com.y8.slope',
-       name: 'Slope'
-     },
-     {
-       id: 'com.solana.mobilewalletadapter.fakewallet',
-       name: 'FakeWallet'
-     }
-
-  ];
-
-  constructor(private modalCtrl: ModalController, private appstate: AppstateService) { }
-
-  ngOnInit() {
-      console.log(this.data);
-      this.installed = this.walletData.filter(wallet => this.data.includes(wallet.id));
-      this.notFound = this.walletData.filter(wallet => !this.data.includes(wallet.id));
-  }
+  constructor(private modalCtrl: ModalController,
+              private appstate: AppstateService,
+              private sanitizer: DomSanitizer
+              ) { }
 
   selectWallet(wallet: any) {
-    console.log(wallet);
-    this.appstate.selectedWallet$.next(wallet.name);
+    Object.assign(wallet, {
+      dAppPlatform: this.appstate.walletsAndEnvironment$.value?.dAppPlatform,
+      dAppOs: this.appstate.walletsAndEnvironment$.value?.aAppOs
+    });
+
+    this.appstate.selectedWallet$.next(wallet);
     this.dismiss();
+  }
+
+  getImage(url: string) {
+    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
   dismiss() {

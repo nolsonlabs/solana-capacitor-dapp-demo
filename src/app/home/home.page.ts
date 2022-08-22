@@ -4,105 +4,35 @@ import { WalletPickerComponent } from '../components/wallet-picker/wallet-picker
 
 import { SolanaWalletAdaptor } from 'solana-wallet-adaptor-capacitor';
 
-import { DOCUMENT } from '@angular/common';
-
 import { AppstateService } from '../services/appstate.service';
-
-// Solana test implementation
-import { clusterApiUrl } from '@solana/web3.js';
-import { createDefaultAddressSelector,
-        createDefaultAuthorizationResultCache,
-        SolanaMobileWalletAdapter } from '@solana-mobile/wallet-adapter-mobile';
-
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-import {
-    CoinbaseWalletAdapter,
-    GlowWalletAdapter,
-    PhantomWalletAdapter,
-    SlopeWalletAdapter,
-    SolflareWalletAdapter,
-    SolletExtensionWalletAdapter,
-    SolletWalletAdapter,
-    TorusWalletAdapter,
-    TokenaryWalletAdapter,
-} from '@solana/wallet-adapter-wallets';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage implements OnInit {
-  public helloWorld: string;
-  public wallets: string[];
-  public jswallets: any[] = [];
-  public window: any;
-  public phantomCheck: any;
-  public authorized: any;
-  public authToken: string;
-  public publicKey: any;
-  public reauthorized = false;
-  public deauthorized = false;
-  public installedApps: string[];
-
-  public walletEndpointAvailable: boolean;
-  public getCapabilitiesResult = false;
+export class HomePage {
 
   constructor(
-    @Inject(DOCUMENT) private document: Document,
-    private modalCtrl: ModalController,
-    private appstate: AppstateService
+      private modalCtrl: ModalController,
+      private appstate: AppstateService
     ) {
-    this.window = this.document.defaultView;
-  }
 
-  async ngOnInit() {
-   this.getInstalled();
-  }
-
-  async connectToWallet(walletName: string): Promise<{ connected: boolean }> {
-    if (walletName === 'phantom') {
-      // connect to phantom
-      const app = new SolanaMobileWalletAdapter({
-        addressSelector: createDefaultAddressSelector(),
-        appIdentity: {
-            name: 'Phantom test',
-            uri: 'app.phantom',
-            icon: './assets/favicon.png',
-       },
-        authorizationResultCache: createDefaultAuthorizationResultCache(),
-        cluster: 'testnet'
-    });
-
-      const phantom = new PhantomWalletAdapter();
-      this.phantomCheck = phantom.readyState;
-      await phantom.connect();
-
-    }
-    return {connected: true};
-  }
-
-  async isEndPointAvailable() {
-    const walletEndpointAvailable = await SolanaWalletAdaptor.checkIsWalletEndpointAvailable();
-    this.walletEndpointAvailable = walletEndpointAvailable.endpointAvailable;
-  }
-
-  async getCapabilities() {
-    const result = await SolanaWalletAdaptor.getCapabilities();
-    console.log(result);
   }
 
   async authorize(wallet: string) {
+
     const result = await SolanaWalletAdaptor.authorize(wallet);
     if (result.authorized) {
       this.appstate.authorizationObject$.next(result);
-      console.log(result.connection);
+
+
       // [TO DO CONSOLIDATE THIS AROUND authorizationObject to allow for wallet adaptor connection obj]
       this.appstate.authToken$.next(result.authToken);
       this.appstate.publicKey$.next(result.publicKey);
       this.appstate.toastMessage$.next('dApp authorized!');
     } else {
-      this.appstate.authorizationObject$.next(null);
+      this.appstate.authorizationObject$.next({ authorized: false, authToken: '', publicKey: '', connection: null});
       this.appstate.authToken$.next('');
       this.appstate.publicKey$.next('');
       this.appstate.toastMessage$.next('dApp not authorized!');
@@ -128,6 +58,7 @@ export class HomePage implements OnInit {
     if (result.deauthorized) {
       this.appstate.toastMessage$.next('dApp deauthorized!');
       this.appstate.authToken$.next('');
+      this.appstate.authorizationObject$.next({ authorized: false, authToken: '', publicKey: '', connection: null});
     } else {
       this.appstate.toastMessage$.next('dApp not deauthorized!');
     }
@@ -141,11 +72,6 @@ export class HomePage implements OnInit {
       this.appstate.toastMessage$.next('Airdrop request failed');
     }
 
-  }
-
-  async getInstalled() {
-    const result = await SolanaWalletAdaptor.installedApps();
-    this.installedApps = result.installed;
   }
 
   async signTransactions(count: number) {
@@ -205,11 +131,9 @@ export class HomePage implements OnInit {
   }
 
   async connectWallet() {
+    this.appstate.getWalletAndEnvironmentInfo();
     const modal = await this.modalCtrl.create({
       component: WalletPickerComponent,
-      componentProps: {
-        data: this.installedApps
-      }
     });
     modal.present();
   }

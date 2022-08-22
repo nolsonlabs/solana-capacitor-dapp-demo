@@ -8,6 +8,10 @@ import { HomePageRoutingModule } from './home-routing.module';
 
 import { WalletPickerComponent } from '../components/wallet-picker/wallet-picker.component';
 
+import { WalletInstalledPipe } from '../pipes/wallet-installed.pipe';
+import { WalletNotInstalledDeeplinkPipe } from '../pipes/wallet-not-installed-deeplink.pipe';
+import { WalletNotInstalledNoDeeplinkPipe } from '../pipes/wallet-not-installed-no-deeplink.pipe';
+
 
 @NgModule({
   imports: [
@@ -16,6 +20,12 @@ import { WalletPickerComponent } from '../components/wallet-picker/wallet-picker
     IonicModule,
     HomePageRoutingModule
   ],
-  declarations: [HomePage, WalletPickerComponent]
+  declarations: [
+    HomePage,
+    WalletPickerComponent,
+    WalletInstalledPipe,
+    WalletNotInstalledDeeplinkPipe,
+    WalletNotInstalledNoDeeplinkPipe
+  ]
 })
 export class HomePageModule {}

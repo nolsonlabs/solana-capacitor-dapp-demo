@@ -5,6 +5,9 @@ project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/
 include ':capacitor-app'
 project(':capacitor-app').projectDir = new File('../node_modules/@capacitor/app/android')
 
+include ':capacitor-device'
+project(':capacitor-device').projectDir = new File('../node_modules/@capacitor/device/android')
+
 include ':capacitor-haptics'
 project(':capacitor-haptics').projectDir = new File('../node_modules/@capacitor/haptics/android')
 
@@ -14,5 +17,5 @@ project(':capacitor-keyboard').projectDir = new File('../node_modules/@capacitor
 include ':capacitor-status-bar'
 project(':capacitor-status-bar').projectDir = new File('../node_modules/@capacitor/status-bar/android')
 
-include ':nolson-solana-wallet-adaptor-capacitor'
-project(':nolson-solana-wallet-adaptor-capacitor').projectDir = new File('../../final/solana-capacitor-dapp/android')
+include ':solana-wallet-adaptor-capacitor'
+project(':solana-wallet-adaptor-capacitor').projectDir = new File('../../solana-mobile/solana-wallet-adaptor-capacitor/android')

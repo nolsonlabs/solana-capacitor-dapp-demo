@@ -9,19 +9,40 @@
 </ion-toolbar>
 </ion-header>
 <ion-content>
-    <ion-list class="ion-no-padding">
-        <ion-item-divider *ngIf="installed.length" color="light">Installed Wallets</ion-item-divider>
-        <ion-item (click)="selectWallet(wallet)" button *ngFor="let wallet of installed">
-            <ion-icon name="wallet-sharp" slot="start" color="primary"></ion-icon>
-            <ion-label>{{ wallet.name }}</ion-label>
-            <ion-icon name="checkmark-sharp" slot="end" color="success"></ion-icon>
-        </ion-item>
-        <ion-item-divider *ngIf="notFound.length" color="light">Wallets Not Found</ion-item-divider>
-        <ion-item button *ngFor="let wallet of notFound">
-            <ion-icon name="wallet-sharp" slot="start" color="medium"></ion-icon>
-            <ion-label>{{ wallet.name }}</ion-label>
-            <ion-icon name="close-sharp" color="danger"></ion-icon>
-        </ion-item>
+    <ion-list class="ion-no-padding" lines="full">
+        <ng-container *ngFor="let wallet of (appstate.walletsAndEnvironment$ | async | walletInstalled )?.walletInfo; let i = index;">
+            <ion-item-divider *ngIf="(appstate.walletsAndEnvironment$ | async | walletInstalled )?.walletInfo.length && i === 0" color="light">Installed Wallets</ion-item-divider>
+            <ion-item (click)="selectWallet(wallet)" button>
+                <ion-thumbnail slot="start">
+                    <img [src]="getImage(wallet.walletIcon)">
+                </ion-thumbnail>
+                <ion-label>{{ wallet.walletName }}</ion-label>
+                <ion-icon name="checkmark-sharp" slot="end" color="success"></ion-icon>
+            </ion-item>
+        </ng-container>
+        <ng-container *ngFor="let wallet of (appstate.walletsAndEnvironment$ | async | walletNotInstalledDeeplink )?.walletInfo; let i = index;">
+            <ion-item-divider *ngIf="(appstate.walletsAndEnvironment$ | async | walletNotInstalledDeeplink )?.walletInfo.length && i === 0" color="light">Not Detected - Deeplink Capable</ion-item-divider>
+            <ion-item (click)="selectWallet(wallet)" button>
+                <ion-thumbnail slot="start">
+                    <img [src]="getImage(wallet.walletIcon)">
+                </ion-thumbnail>
+                <ion-label>{{ wallet.walletName }}</ion-label>
+                <ion-icon name="checkmark-sharp" slot="end" color="warning"></ion-icon>
+            </ion-item>
+        </ng-container>
+        <ng-container *ngFor="let wallet of (appstate.walletsAndEnvironment$ | async | walletNotInstalledNoDeeplink )?.walletInfo; let i = index;">
+            <ion-item-divider *ngIf="(appstate.walletsAndEnvironment$ | async | walletNotInstalledNoDeeplink )?.walletInfo.length && i === 0" color="light">Not Detected</ion-item-divider>
+            <ion-item>
+                <ion-thumbnail slot="start">
+                    <img [src]="getImage(wallet.walletIcon)">
+                </ion-thumbnail>
+                <ion-label>{{ wallet.walletName }}</ion-label>
+                <ion-icon name="close-sharp" color="danger"></ion-icon>
+            </ion-item>
+
+        </ng-container>
+
+
     </ion-list>
 
 </ion-content>
