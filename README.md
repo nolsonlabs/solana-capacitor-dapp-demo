@@ -14,3 +14,12 @@
     <li>run "ionic cap open android to open the project in Android studio</li>
     <li>deploy to a device to emulator using the standard Android Studio workflow</li>
 </ul>
+
+<h4>Dependency issues</h4>
+<p>After installing the dependencies and trying to run you get the compilation warning "Error: node_modules/@jnwng/walletconnect-solana/lib/types/adapter.d.ts:3:15 - error TS2305: Module '"@walletconnect/types"' has no exported member 'SignClientTypes'." you can fix this as follows;</p>
+
+<p>In node_modules/@jnwng/wallet-connect-solana/lib/types/adapter.d.s;</p>
+<p> Comment out "import type { SignClientTypes } from '@walletconnect/types';"</p>
+<p>In lines 5-8 change the type of options to any so it looks like this: export interface WalletConnectWalletAdapterConfig { network: WalletConnectChainID; options: any;
+}</p>
+<p>Pretty hack and not ideal but will allow you to see the demo.</p>
