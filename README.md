@@ -22,4 +22,4 @@
 <p> Comment out "import type { SignClientTypes } from '@walletconnect/types';"</p>
 <p>In lines 5-8 change the type of options to any so it looks like this: export interface WalletConnectWalletAdapterConfig { network: WalletConnectChainID; options: any;
 }</p>
-<p>Pretty hack and not ideal but will allow you to see the demo.</p>
+<p>Pretty hacky and definitely not ideal but will allow you to run the demo.</p>
