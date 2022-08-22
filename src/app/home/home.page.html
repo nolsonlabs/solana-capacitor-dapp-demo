@@ -32,7 +32,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-button (click)="authorize()" expand="block">Authorize</ion-button>
+        <ion-button (click)="authorize(appstate.selectedWallet$.value?.walletName)" expand="block">Authorize</ion-button>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -124,7 +124,7 @@
           </ion-row>
           <ion-row *ngIf="appstate.selectedWallet$.value?.walletInstalled && appstate.selectedWallet$.value?.dAppPlatform === 'web'">
             <ion-col>
-              <ion-button (click)="deauthorize(appstate.selectedWallet$.value)"
+              <ion-button (click)="deauthorize()"
                           [disabled]="!appstate.authorizationObject$.value.authorized"
               >Disconnect</ion-button>
             </ion-col>
@@ -152,7 +152,7 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-button (click)="deauthorize(appstate.selectedWallet$.value)" [disabled]="!appstate.authorizationObject$.value.authorized">Disconnect</ion-button>
+          <ion-button (click)="deauthorize()" [disabled]="!appstate.authorizationObject$.value.authorized">Disconnect</ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>

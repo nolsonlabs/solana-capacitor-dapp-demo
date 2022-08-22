@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class WalletNotInstalledDeeplinkPipe implements PipeTransform {
 
-  transform(value: any, ...args: unknown[]): unknown {
+  transform(value: any, ...args: unknown[]): any {
     const modifyObj = {...value};
     const result = modifyObj?.walletInfo?.filter(wallet => !wallet?.walletInstalled)
                                        .filter(wallet => wallet?.walletHasDeepLinkCapability && modifyObj?.dAppPlatform === 'android');

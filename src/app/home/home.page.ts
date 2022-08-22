@@ -15,9 +15,13 @@ export class HomePage {
 
   constructor(
       private modalCtrl: ModalController,
-      private appstate: AppstateService
+      public appstate: AppstateService
     ) {
 
+  }
+
+  async getCapabilities() {
+    const result = await SolanaWalletAdaptor.getCapabilities();
   }
 
   async authorize(wallet: string) {

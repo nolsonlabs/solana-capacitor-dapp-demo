@@ -12,7 +12,7 @@ import { AppstateService } from '../../services/appstate.service';
 export class WalletPickerComponent {
 
   constructor(private modalCtrl: ModalController,
-              private appstate: AppstateService,
+              public appstate: AppstateService,
               private sanitizer: DomSanitizer
               ) { }
 

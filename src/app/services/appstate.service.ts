@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { ToastController } from '@ionic/angular';
@@ -8,7 +8,7 @@ import { SolanaWalletAdaptor } from 'solana-wallet-adaptor-capacitor';
 @Injectable({
   providedIn: 'root'
 })
-export class AppstateService implements OnDestroy {
+export class AppstateService {
 
   // Viewport
   public fixed$: BehaviorSubject<boolean> = new BehaviorSubject<boolean | null>(null);
@@ -25,7 +25,7 @@ export class AppstateService implements OnDestroy {
 
   // Toast data for messages from app
   public toastMessage$: BehaviorSubject<string> = new BehaviorSubject(null);
-  public selectedWallet$: BehaviorSubject<string> = new BehaviorSubject(null);
+  public selectedWallet$: BehaviorSubject<any> = new BehaviorSubject(null);
   public small$: BehaviorSubject<boolean | null> = new BehaviorSubject(null);
 
   constructor(private toastCtrl: ToastController) {}
@@ -42,10 +42,5 @@ export class AppstateService implements OnDestroy {
     const walletAndEnvironmentInfo = await SolanaWalletAdaptor.getWalletAndEnvironmentInfo();
     this.walletsAndEnvironment$.next(walletAndEnvironmentInfo);
   }
-
-  ngOnDestroy() {
-
-  }
-
 
 }
